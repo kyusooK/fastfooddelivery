@@ -1,87 +1,31 @@
-# 
-
-## Model
-www.msaez.io/#/courses/cna-full/8140e960-cfb1-11ee-953f-774986e7d9ae/AI-Lab-Codespaces
-
-## Before Running Services
-### Make sure there is a Kafka server running
+Firstly, set OPENAI_API_KEY:
 ```
-cd kafka
+export OPENAI_API_KEY=sk-...
+```
+
+Let the GPT Engineer generates code:
+```
+cd gpt-engineer
 docker-compose up
 ```
-- Check the Kafka messages:
+
+After generating code successfully you can see the files in your microservices folder.
+And you can run them with:
+
 ```
-cd infra
-docker-compose exec -it kafka /bin/bash
-cd /bin
-./kafka-console-consumer --bootstrap-server localhost:9092 --topic
-```
-
-## Run the backend micro-services
-See the README.md files inside the each microservices directory:
-
-- order
-- store
-- delivery
-
-
-## Run API Gateway (Spring Gateway)
-```
-cd gateway
+cd {microservice}
 mvn spring-boot:run
 ```
 
-## Test by API
-- order
+> Note: Before you run the application, Ensure to use JDK 17 and run the infra (Kafka):
 ```
- http :8088/orders id="id" userId="userId" menuId="menuId" menuName="menuName" qty="qty" address="address" status="status" orderDt="orderDt" 
-```
-- store
-```
- http :8088/stores id="id" orderId="orderId" userId="userId" menuId="menuId" menuName="menuName" qty="qty" address="address" status="status" cookingDt="cookingDt" 
-```
-- delivery
-```
- http :8088/deliveries id="id" riderId="riderId" userId="userId" storeId="storeId" orderId="orderId" address="address" status="status" deliveryDt="deliveryDt" 
+sdk install java 17.0.4.1-tem
+cd infra
+docker-compose up
 ```
 
-
-## Run the frontend
+> Node: To totally regenerate the code, you have to delete the directory as well:
 ```
-cd frontend
-npm i
-npm run serve
-```
-
-## Test by UI
-Open a browser to localhost:8088
-
-## Required Utilities
-
-- httpie (alternative for curl / POSTMAN) and network utils
-```
-sudo apt-get update
-sudo apt-get install net-tools
-sudo apt install iputils-ping
-pip install httpie
-```
-
-- kubernetes utilities (kubectl)
-```
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-```
-
-- aws cli (aws)
-```
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo ./aws/install
-```
-
-- eksctl 
-```
-curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-sudo mv /tmp/eksctl /usr/local/bin
+sudo rm -rf .gpteng
 ```
 
